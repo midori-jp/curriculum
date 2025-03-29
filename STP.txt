@@ -1,0 +1,40 @@
+問1）ルートブリッジ＝Switch3
+
+問2）ルートポート＝Switch①F0/2　Switch②F0/1　Switch④E0/2
+　　　算出方法↓
+      ●ショートパスコスト
+　      Switch①⇔Switch②　Fastethernet同士間のため100Mbps＝19
+　      Switch②⇔Switch③　FastethernetとEthernet間につき遅いEthernetに合わせる
+　　　　　　　　　　     　10Mbps＝100
+　      Switch③⇔Switch④　Ethernet同士間のため10Mbps＝100
+　      Switch①⇔Switch③　FastethernetとEthernet間につき遅いEthernetに合わせる
+　　　　　　　　　　　     10Mbps＝100
+      ●ルートパスコスト
+　      Switch①　F0/1…19＋100＋100＝219
+　　　　　　      F0/2…100
+　      Switch②　F0/1…19＋100＝119
+　　　　　　      F0/2…100＋100＝200
+　      Switch④　E0/1…100＋19＋100＝219
+　　　　　　      E0/2…100
+　　　上記ルートパスコストの計算を踏まえ、各スイッチにおいて値が小さいポートが
+      ルートポートとなるため各スイッチのルートポートを以下の通り選定する。
+         Switch①F0/2　Switch②F0/1　Switch④E0/2　
+　　　なおSwitch③についてはルートブリッジのためRPなし。
+
+　　指定ポート＝Switch①F0/1　Switch③E0/1とE0/2　Switch④E0/1
+　　 算出方法↓
+　　　指定ポート選出ルールに則り選定
+　　　ルール１…ルートブリッジは全てのポートが指定ポート
+　　　　　　　→Switch③E0/1とE0/2
+　　　ルール２…ルートポート向かいは指定ポート
+　　　　　　　→Switch①F0/1　
+　　　ルール３…各コリジョンドメインごとに１つ指定ポート
+　　　　　　　→Switch②⇔Switch④間において指定ポートがないためルートポートに
+      近い方のスイッチのポートを指定ポートとする。＝Switch④E0/1
+
+　　
+
+    ブロッキングポート＝Switch②F0/2
+　　 算出方法↓
+　　　ルートポート、指定ポート以外のポートをブロッキングポートとするため
+　　　Switch②F0/2
